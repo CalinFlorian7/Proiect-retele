@@ -127,6 +127,9 @@ class Server:
                 elif starting_price == "" or not tryParseFloat(starting_price):
                     send_message_to_client(
                         "Please enter a valid starting price!", client_socket)
+                elif  self.__products.is_product_registered(user, Product(product_name, float(starting_price))):
+                    send_message_to_client(
+                        "The product already exists!", client_socket)
                 else:
                     product = Product(product_name, float(starting_price))
                     self.__products.add_product(user, product)
