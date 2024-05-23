@@ -33,29 +33,4 @@ class ProductRegistry:
         if username in self.__products:
             del self.__products[username]
 
-    # def getSerializedProducts(self):
-    #     products = {}
-    #     for productName in self.__products.keys():
-    #         product = self.__products[productName]
-    #         products[productName] = product.serialize()
-    #     return products
-
-    # def serialize(self):
-    #     products = {}
-    #     for productName in self.__products.keys():
-    #         product = self.__products[productName]
-    #         products[productName] = product.serialize()
-
-    # @staticmethod
-    # def deserialize(data):
-    #     products = {}
-    #     for productName in data.keys():
-    #         product = Product.deserialize(data[productName])
-    #         products[productName] = product
-    #     return products
-
-    # def displayProducts(self):
-    #     print("Products already added:")
-    #     for productName in self.__products:
-    #         produsCurent = self.__products[productName]
-    #         print(produsCurent.__str__())
+   

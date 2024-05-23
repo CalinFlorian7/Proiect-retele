@@ -159,7 +159,7 @@ class Server:
                 send_message_to_client(
                     "Please write a product index to start the auction: ", client_socket)
                 product_index = get_client_response(client_socket)
-                # while True:
+              
                 if product_index == "":
                     send_message_to_client(
                         "Please enter a valid index!", client_socket)
@@ -256,7 +256,7 @@ class Server:
                             else:
                                 auction.bid(float(bid_amount),
                                             user)
-                                # filter users that are not the sender if they are in the bid list
+                              
                                 cc = {k: v for k, v in self.__users.get_users(
                                 ).items() if auction.is_user_participating(v) or v.get_name() == auction.get_owner()}
                                 broadcast_to_all_clients(
