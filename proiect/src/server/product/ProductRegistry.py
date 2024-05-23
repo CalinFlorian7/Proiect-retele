@@ -20,12 +20,13 @@ class ProductRegistry:
         if user.get_name() not in self.__products:
             self.__products[user.get_name()] = []
         self.__products[user.get_name()].append(product)
+
     def is_product_registered(self, user: User, product: Product):
-        for prod in self.__products[user.get_name()]:
+        products = self.get_user_products(user)
+        for prod in products:
             if prod.get_name() == product.get_name():
                 print("Product registered")
                 return True
-        print("Product not registered")
         return False
 
     def remove_user_products(self, username):
