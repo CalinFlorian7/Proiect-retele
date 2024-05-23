@@ -91,7 +91,9 @@ class Server:
                     send_message_to_client(
                         "Please select an available option!\n", client_socket)
 
-        except Exception:
+        except (ConnectionResetError,ConnectionAbortedError,socket.error)as e:
+            print(str(e))
+        finally:
             self.__users.remove_user(user)
             self.__products.remove_user_products(user)
             client_socket.close()
@@ -173,7 +175,7 @@ class Server:
                     threading.Thread(target=self.handle_auction, args=(
                         client_socket, auction)).start()
                     return
-        except ConnectionResetError as e:
+        except (ConnectionResetError) as e:
             print(str(e))
 
     def handle_auction(self, client_socket: socket, auction: Auction):
