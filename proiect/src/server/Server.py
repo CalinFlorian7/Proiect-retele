@@ -76,6 +76,10 @@ class Server:
                 send_message_to_client(
                     "Please select an option:\n1. Add a product\n2. Auction an item\n3. Bid on item\n4. See your products \n5. See auctioned products", client_socket)
                 option = get_client_response(client_socket)
+                if option is None:
+                    break
+                if len(option) == 0:
+                    break
                 if option == "1":
                     self.insert_product(client_socket, user)
                 elif option == "2":
@@ -91,7 +95,8 @@ class Server:
                     send_message_to_client(
                         "Please select an available option!\n", client_socket)
 
-        except (ConnectionResetError,ConnectionAbortedError,socket.error)as e:
+        except (ConnectionResetError, ConnectionAbortedError, socket.error)as e:
+
             print(str(e))
         finally:
             self.__users.remove_user(user)
@@ -116,7 +121,7 @@ class Server:
 
     def insert_product(self, client_socket: socket, user: User):
         try:
-            
+
             while True:
                 send_message_to_client(
                     "Please enter the product name: ", client_socket)
@@ -130,7 +135,7 @@ class Server:
                 elif starting_price == "" or not tryParseFloat(starting_price):
                     send_message_to_client(
                         "Please enter a valid starting price!", client_socket)
-                elif  self.__products.is_product_registered(user, Product(product_name, float(starting_price))):
+                elif self.__products.is_product_registered(user, Product(product_name, float(starting_price))):
                     send_message_to_client(
                         "The product with this name already exists!!!!", client_socket)
                 else:
@@ -171,7 +176,8 @@ class Server:
                     auction = Auction(
                         user.get_name(), products[int(product_index)])
                     self.__auctions.append(auction)
-                    broadcast_to_all_clients(f"An auction has started by {user.get_name()} for the product: \n" + str(auction), client_socket, self.__users.get_users())
+                    broadcast_to_all_clients(f"An auction has started by {user.get_name()} for the product: \n" + str(
+                        auction), client_socket, self.__users.get_users())
                     threading.Thread(target=self.handle_auction, args=(
                         client_socket, auction)).start()
                     return
@@ -187,7 +193,8 @@ class Server:
                 send_message_to_client(
                     f"Your auction for {str(auction)} has ended!", client_socket)
                 if auction.get_last_bid() is not None:
-                    broadcast_to_all_clients(f"Winner: {auction.get_last_bid().get_bidder()} with the price of {auction.get_last_bid().get_price()}", None, self.__users.get_users())
+                    broadcast_to_all_clients(
+                        f"Winner: {auction.get_last_bid().get_bidder()} with the price of {auction.get_last_bid().get_price()}", None, self.__users.get_users())
                 product = auction.get_product()
                 if auction.get_last_bid() is not None:
                     product.set_was_sold(True)
