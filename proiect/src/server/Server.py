@@ -152,27 +152,27 @@ class Server:
                 send_message_to_client(
                     "Please write a product index to start the auction: ", client_socket)
                 product_index = get_client_response(client_socket)
-                while True:
-                    if product_index == "":
-                        send_message_to_client(
-                            "Please enter a valid index!", client_socket)
-                    elif not product_index.isdigit():
-                        send_message_to_client(
-                            "Please enter a valid index!", client_socket)
-                    elif int(product_index) >= len(products):
-                        send_message_to_client(
-                            "The product does not exist, please enter a valid index!", client_socket)
-                    elif int(product_index) < 0:
-                        send_message_to_client(
-                            "The product does not exist, please enter a valid index!", client_socket)
-                    else:
-                        auction = Auction(
-                            user.get_name(), products[int(product_index)])
-                        self.__auctions.append(auction)
-                        broadcast_to_all_clients(f"An auction has started by {user.get_name()} for the product: \n" + str(auction), client_socket, self.__users.get_users())
-                        threading.Thread(target=self.handle_auction, args=(
-                            client_socket, auction)).start()
-                        return
+                # while True:
+                if product_index == "":
+                    send_message_to_client(
+                        "Please enter a valid index!", client_socket)
+                elif not product_index.isdigit():
+                    send_message_to_client(
+                        "Please enter a valid index!", client_socket)
+                elif int(product_index) >= len(products):
+                    send_message_to_client(
+                        "The product does not exist, please enter a valid index!", client_socket)
+                elif int(product_index) < 0:
+                    send_message_to_client(
+                        "The product does not exist, please enter a valid index!", client_socket)
+                else:
+                    auction = Auction(
+                        user.get_name(), products[int(product_index)])
+                    self.__auctions.append(auction)
+                    broadcast_to_all_clients(f"An auction has started by {user.get_name()} for the product: \n" + str(auction), client_socket, self.__users.get_users())
+                    threading.Thread(target=self.handle_auction, args=(
+                        client_socket, auction)).start()
+                    return
         except ConnectionResetError as e:
             print(str(e))
 
